@@ -9,10 +9,19 @@ class window.HandView extends Backbone.View
     @collection.on 'add remove change', => @render()
     @render()
 
+  acing: (scoreArray) ->
+    if scoreArray.length == 1
+      return scoreArray[0]
+
+    else if Math.max(scoreArray[0], scoreArray[1]) <= 21
+      return Math.max(scoreArray[0], scoreArray[1])
+    else
+      return Math.min(scoreArray[0], scoreArray[1])
+
   render: ->
     @$el.children().detach()
     @$el.html @template @collection
     @$el.append @collection.map (card) ->
       new CardView(model: card).$el
-    @$('.score').text @collection.scores()[0]
+    @$('.score').text(@acing(@collection.scores()))
 

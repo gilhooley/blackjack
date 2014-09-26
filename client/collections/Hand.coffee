@@ -5,7 +5,35 @@ class window.Hand extends Backbone.Collection
   initialize: (array, @deck, @isDealer) ->
 
   hit: ->
-    @add(@deck.pop()).last()
+    test = (scores) ->
+      for total in scores
+        if total < 21
+         return true
+
+    if @scores().length < 2 and @scores()[0] < 21
+      @add(@deck.pop()).last()
+
+    else if @scores().length >= 2
+     console.log @scores().length
+
+
+     if test(@scores())
+       @add(@deck.pop()).last()
+
+    else
+      #trigger bust
+
+
+  bust: ->
+    # if scores() > 21, trigger bust event
+
+  win: ->
+    # scores() == 21, trigger win event
+    # else if player has stopped hitting
+    # & dealer scores() >= 17
+    #  scores()
+    #  if my score is 21 i win if im a player
+    #  if my score < 21 check if my score is greater than other score
 
   scores: ->
     # The scores are an array of potential scores.
