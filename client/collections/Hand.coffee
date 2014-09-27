@@ -2,9 +2,20 @@ class window.Hand extends Backbone.Collection
 
   model: Card
 
+  currentPlayer: (@isDealer) ->
+    if @isDealer then currPlayer = "Dealer"
+    else currPlayer = "You"
+    return currPlayer
+
   initialize: (array, @deck, @isDealer) ->
+    @on('hit', @hit, @)
+    @on('stand', @stand, @)
+    @on('bust', @bust, @)
+    @on('win', @win, @)
+    @currentPlayer(@isDealer)
 
   hit: ->
+
     test = (scores) ->
       for total in scores
         if total < 21
@@ -14,26 +25,30 @@ class window.Hand extends Backbone.Collection
       @add(@deck.pop()).last()
 
     else if @scores().length >= 2
-     console.log @scores().length
-
-
      if test(@scores())
        @add(@deck.pop()).last()
 
     else
-      #trigger bust
+      @bust()
+     # if scores() > 21, trigger bust event
 
-
-  bust: ->
-    # if scores() > 21, trigger bust event
-
-  win: ->
+  stand: ->
     # scores() == 21, trigger win event
-    # else if player has stopped hitting
     # & dealer scores() >= 17
     #  scores()
     #  if my score is 21 i win if im a player
     #  if my score < 21 check if my score is greater than other score
+
+  bust: ->
+    # tell player a loss happened
+    # other = @isDealer or "You"
+    alert "#{@currentPlayer()} bast!"
+    #trigger other other player wins
+    @initialize()
+
+  win: ->
+    # tell player he's won
+    alert "You won!"
 
   scores: ->
     # The scores are an array of potential scores.
