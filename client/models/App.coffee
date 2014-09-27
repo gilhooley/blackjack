@@ -8,10 +8,16 @@ class window.App extends Backbone.Model
     console.log @get('dealerHand').scores()
     @get('playerHand').on("checkScore", @checkScore, @)
 
-  checkScore: (arg) ->
-    console.log arg
+  checkScore: ->
+    @get('dealerHand').at(0).flip()
     dealerScore = @get('dealerHand').scores()[0]
     playerScore = @get('playerHand').scores()[0]
+
+    while dealerScore < 17
+      @get('dealerHand').hit()
+      dealerScore = @get('dealerHand').scores()[0]
+
+
     if dealerScore > playerScore
       console.log "Dealer wins"
     else
