@@ -27,6 +27,8 @@ class window.Hand extends Backbone.Collection
     else if @scores().length >= 2
      if test(@scores())
        @add(@deck.pop()).last()
+     else
+      @bust()
 
     else
       @bust()
@@ -41,10 +43,10 @@ class window.Hand extends Backbone.Collection
 
   bust: ->
     # tell player a loss happened
+    #console.log "#{@currentPlayer()} bast!"
     # other = @isDealer or "You"
-    alert "#{@currentPlayer()} bast!"
     #trigger other other player wins
-    @initialize()
+    alert "#{@currentPlayer()} busted"
 
   win: ->
     # tell player he's won

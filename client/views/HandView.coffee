@@ -5,9 +5,11 @@ class window.HandView extends Backbone.View
   #todo: switch to mustache
   template: _.template '<h2><% if(isDealer){ %>Dealer<% }else{ %>You<% } %> (<span class="score"></span>)</h2>'
 
+
   initialize: ->
     @collection.on 'add remove change', => @render()
     @render()
+
 
   acing: (scoreArray) ->
     if scoreArray.length == 1
