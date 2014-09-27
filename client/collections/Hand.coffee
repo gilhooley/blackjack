@@ -2,6 +2,7 @@ class window.Hand extends Backbone.Collection
 
   model: Card
 
+
   currentPlayer: (@isDealer) ->
     if @isDealer then currPlayer = "Dealer"
     else currPlayer = "You"
@@ -35,7 +36,16 @@ class window.Hand extends Backbone.Collection
      # if scores() > 21, trigger bust event
 
   stand: ->
-    # scores() == 21, trigger win event
+    console.log "hello"
+    @trigger("checkScore", "hello world")
+    if @scores().length < 2
+      if @scores()[0] == 21
+        console.log "You win!"
+      else if @scores()[0] > 21
+        console.log "Busted"
+      else if @scores()[0] < 21
+        return @scores()[0]
+
     # & dealer scores() >= 17
     #  scores()
     #  if my score is 21 i win if im a player
@@ -43,7 +53,6 @@ class window.Hand extends Backbone.Collection
 
   bust: ->
     # tell player a loss happened
-    #console.log "#{@currentPlayer()} bast!"
     # other = @isDealer or "You"
     #trigger other other player wins
     alert "#{@currentPlayer()} busted"
@@ -63,3 +72,4 @@ class window.Hand extends Backbone.Collection
       score + if card.get 'revealed' then card.get 'value' else 0
     , 0
     if hasAce then [score, score + 10] else [score]
+
