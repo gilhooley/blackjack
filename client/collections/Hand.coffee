@@ -1,6 +1,7 @@
 class window.Hand extends Backbone.Collection
 
   model: Card
+  playable: true;
 
   currentPlayer: (@isDealer) ->
     if @isDealer then currPlayer = "Dealer"
@@ -15,39 +16,43 @@ class window.Hand extends Backbone.Collection
     @currentPlayer(@isDealer)
 
   hit: ->
+    if @playable
+      test = (scores) ->
+        for total in scores
+          if total < 21
+           return true
 
-    test = (scores) ->
-      for total in scores
-        if total < 21
-         return true
+      if @scores().length < 2 and @scores()[0] < 21
+        @add(@deck.pop()).last()
 
-    if @scores().length < 2 and @scores()[0] < 21
-      @add(@deck.pop()).last()
+      else if @scores().length >= 2
+       if test(@scores())
+         @add(@deck.pop()).last()
+       else
+        @bust()
 
-    else if @scores().length >= 2
-     if test(@scores())
-       @add(@deck.pop()).last()
-     else
-      @bust()
-
-    else
-      @bust()
+      else
+        @bust()
 
   stand: ->
-    if @scores().length < 2
-      if @scores()[0] == 21
-        @win()
-      else if @scores()[0] > 21
-        @bust()
-      else if @scores()[0] < 21
+    if @playable
+      if @scores().length < 2
+        if @scores()[0] == 21
+          @win()
+        else if @scores()[0] > 21
+          @bust()
+        else if @scores()[0] < 21
+          @trigger("checkScore")
+      else
         @trigger("checkScore")
 
   bust: ->
-    # alert "#{@currentPlayer()} busted"
-    console.log "Someone busted. Was it you?"
+    alert "Player loses (bust)"
+    @playable = false;
 
   win: ->
-    console.log "You won!"
+    alert "Player wins (stood)"
+    @playable = false;
 
   scores: ->
     # The scores are an array of potential scores.
