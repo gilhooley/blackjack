@@ -17,14 +17,19 @@ class window.App extends Backbone.Model
       dealerScore = @get('dealerHand').scores()[0]
 
     if dealerScore > 21
-      alert "Player wins (Dealer busts)"
+      setTimeout(->
+        alert "Player wins (Dealer busts)"
+      ,600)
       @get('playerHand').playable = false
     else if dealerScore > playerScore and dealerScore < 22
-      alert "Dealer wins (closer to 21)" + @get('dealerHand').scores()
+      setTimeout(->
+        alert "Dealer wins (closer to 21)"
+      ,600)
       @get('playerHand').playable = false
-
     else
-      alert "Player wins (other)"
+      setTimeout(->
+        alert "Player wins (other)"
+      ,600)
       @get('playerHand').playable = false
 
 

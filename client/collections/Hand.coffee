@@ -34,6 +34,11 @@ class window.Hand extends Backbone.Collection
       else
         @bust()
 
+    if @scores()[0] == 21
+      @win()
+    else if @scores()[0] > 21
+      @bust()
+
   stand: ->
     if @playable
       if @scores().length < 2
@@ -47,11 +52,15 @@ class window.Hand extends Backbone.Collection
         @trigger("checkScore")
 
   bust: ->
-    alert "Player loses (bust)"
+    setTimeout(->
+      alert "Player loses (bust)"
+    ,600)
     @playable = false;
 
   win: ->
-    alert "Player wins (stood)"
+    setTimeout(->
+      alert "Player wins"
+    ,600)
     @playable = false;
 
   scores: ->
